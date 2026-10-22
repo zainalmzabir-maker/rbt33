@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Latihan Pra UASA 2 Tingkatan 3</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      body { background-color: #ffffff; color: #000000; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- HEADER SISTEM -->
+  <header class="bg-teal-950 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-400 flex items-center justify-center text-teal-950 font-black text-xl shadow">
+          RBT
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold leading-tight">Latihan Pra UASA 2 Tingkatan 3</h1>
+          <p class="text-[11px] text-teal-200">REKA BENTUK DAN TEKNOLOGI - BAHAGIAN B [40 MARKAH]</p>
+        </div>
+      </div>
+
+      <div id="userBadge" class="hidden flex items-center space-x-3">
+        <div class="text-right">
+          <p id="badgeNama" class="text-xs md:text-sm font-semibold text-amber-300"></p>
+          <p id="badgePeranan" class="text-[10px] text-slate-300 uppercase tracking-widest font-mono"></p>
+        </div>
+        <button onclick="logout()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-lg transition shadow">
+          <i class="fa-solid fa-right-from-bracket mr-1"></i> Log Keluar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- KANDUNGAN UTAMA -->
+  <main class="max-w-7xl mx-auto p-4 md:p-6 w-full flex-grow">
+
+    <!-- 1. MODUL LOG MASUK -->
+    <section id="loginSection" class="max-w-md mx-auto my-10 bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+          <i class="fa-solid fa-laptop-code"></i>
+        </div>
+        <h2 class="text-2xl font-black text-slate-800">Portal e-Ujian RBT</h2>
+        <p class="text-xs text-slate-500 mt-1">Latihan Pra UASA 2 Tingkatan 3</p>
+      </div>
+
+      <div class="flex bg-slate-100 p-1.5 rounded-xl mb-5">
+        <button id="tabMuridBtn" onclick="switchLoginTab('murid')" class="w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition bg-white text-teal-950 shadow">
+          <i class="fa-solid fa-user-pen mr-1"></i> Calon Murid
+        </button>
+        <button id="tabGuruBtn" onclick="switchLoginTab('guru')" class="w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition text-slate-500 hover:text-teal-950">
+          <i class="fa-solid fa-chalkboard-user mr-1"></i> Mod Guru
+        </button>
+      </div>
+
+      <!-- Borang Murid -->
+      <div id="formMurid" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Nama Anda:</label>
+          <select id="selectNamaMurid" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50 font-medium">
+            <option value="">-- Sila Pilih Nama --</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kata Laluan (Nombor Kad Pengenalan):</label>
+          <input type="password" id="inputIcMurid" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none" />
+        </div>
+        <button onclick="loginMurid()" id="btnLoginMurid" class="w-full py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center">
+          <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Masuk Portal
+        </button>
+      </div>
+
+      <!-- Borang Guru -->
+      <div id="formGuru" class="space-y-4 hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kata Laluan Pentadbir / Guru:</label>
+          <input type="password" id="inputPassGuru" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none" />
+        </div>
+        <button onclick="loginGuru()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center">
+          <i class="fa-solid fa-lock-open mr-2"></i> Buka Mod Penandaan Guru
+        </button>
+      </div>
+
+      <div id="loginMsg" class="mt-4 text-center text-xs font-bold hidden"></div>
+    </section>
+
+    <!-- 2. PORTAL MURID -->
+    <section id="examSection" class="hidden space-y-6">
+      
+      <!-- KAD KEPUTUSAN GURU -->
+      <div id="panelKeputusanMurid" class="hidden bg-gradient-to-r from-emerald-900 to-teal-900 text-white rounded-2xl p-6 shadow-xl border border-emerald-500/30">
+        <div class="flex flex-wrap justify-between items-center gap-4 border-b border-emerald-700/50 pb-4">
+          <div>
+            <span class="px-3 py-1 bg-emerald-500 text-emerald-950 text-xs font-black rounded-full uppercase tracking-wider">
+              <i class="fa-solid fa-circle-check mr-1"></i> Kertas Telah Ditanda
+            </span>
+            <h3 class="text-xl font-black mt-2">Keputusan Rasmi Penandaan Guru</h3>
+            <p class="text-xs text-emerald-200" id="tarikhTandaMurid"></p>
+          </div>
+          <button onclick="window.print()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-teal-950 font-bold text-xs rounded-xl shadow flex items-center transition no-print">
+            <i class="fa-solid fa-print mr-1.5"></i> Cetak Slip Keputusan
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-5 text-center">
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Jumlah Markah</span>
+            <p id="skorMuridJumlah" class="text-2xl font-black text-amber-300">0 / 40</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Peratus (%)</span>
+            <p id="skorMuridPeratus" class="text-2xl font-black text-white">0%</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Gred</span>
+            <p id="skorMuridGred" class="text-2xl font-black text-amber-400">-</p>
+          </div>
+        </div>
+
+        <div class="bg-black/20 p-4 rounded-xl border border-white/10">
+          <span class="text-xs font-bold text-emerald-300 flex items-center">
+            <i class="fa-solid fa-comment-dots mr-1.5"></i> Ulasan & Maklum Balas Guru:
+          </span>
+          <p id="teksUlasanGuruMurid" class="text-xs text-slate-100 mt-1 italic leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+      </div>
+
+      <!-- Bar Maklumat Peperiksaan -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <h2 class="text-xl font-black text-slate-900">BAHAGIAN B [40 MARKAH]</h2>
+          <p class="text-xs text-slate-500 mt-1">
+            <span class="font-bold text-teal-700">Arahan:</span> Jawab semua soalan. Jawapan disimpan secara berasingan atau sekaligus.
+          </p>
+        </div>
+        <div class="flex items-center space-x-2 no-print">
+          <span id="saveStatus" class="text-xs bg-emerald-100 text-emerald-800 px-3.5 py-1.5 rounded-full font-bold shadow-sm">
+            <i class="fa-solid fa-check-circle mr-1"></i> Data Bersedia
+          </span>
+        </div>
+      </div>
+
+      <!-- Bar Navigasi Pantas (S1 - S10) -->
+      <div class="flex overflow-x-auto space-x-2 pb-1 no-print">
+        <a href="#soalan_card_1" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S1</a>
+        <a href="#soalan_card_2" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S2</a>
+        <a href="#soalan_card_3" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S3</a>
+        <a href="#soalan_card_4" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S4</a>
+        <a href="#soalan_card_5" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S5</a>
+        <a href="#soalan_card_6" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S6</a>
+        <a href="#soalan_card_7" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S7</a>
+        <a href="#soalan_card_8" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S8</a>
+        <a href="#soalan_card_9" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S9</a>
+        <a href="#soalan_card_10" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-bold text-xs rounded-xl whitespace-nowrap">S10</a>
+      </div>
+
+      <!-- BORANG SOALAN -->
+      <form id="soalanForm" onsubmit="event.preventDefault();" class="space-y-8">
+
+        <!-- SOALAN 1 -->
+        <div id="soalan_card_1" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 1</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s1" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Rajah menunjukkan suatu produk mekatronik (Mesin Basuh Automatik):
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 p-3 rounded-xl text-xs font-bold text-slate-700 text-center">
+            <div class="p-2 border bg-white rounded-lg">A : Mikropengawal</div>
+            <div class="p-2 border bg-white rounded-lg">B : Motor AU</div>
+            <div class="p-2 border bg-white rounded-lg">C : Penderia</div>
+            <div class="p-2 border bg-white rounded-lg">D : Takal dan tali sawat</div>
+          </div>
+          <p class="text-xs text-slate-600">Lengkapkan gambar rajah blok mesin basuh automatik dengan menulis <strong>A, B, C</strong> atau <strong>D</strong> pada ruang yang disediakan:</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 bg-slate-50 border rounded-xl">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-xs font-medium text-slate-700 flex-grow">(i) Input: Mod pilihan & [ ? ]</span>
+                <span id="status_item_s1_i" class="hidden"></span>
+                <input type="text" id="ans_s1_i" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border border-slate-300 rounded-lg uppercase" placeholder="A/B/C/D" />
+              </div>
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-xs font-medium text-slate-700 flex-grow">(ii) Proses: [ ? ]</span>
+                <span id="status_item_s1_ii" class="hidden"></span>
+                <input type="text" id="ans_s1_ii" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border border-slate-300 rounded-lg uppercase" placeholder="A/B/C/D" />
+              </div>
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-xs font-medium text-slate-700 flex-grow">(iii) Output (Selepas pemacu motor): [ ? ]</span>
+                <span id="status_item_s1_iii" class="hidden"></span>
+                <input type="text" id="ans_s1_iii" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border border-slate-300 rounded-lg uppercase" placeholder="A/B/C/D" />
+              </div>
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-xs font-medium text-slate-700 flex-grow">(iv) Output (Sebelum dram berpusing): [ ? ]</span>
+                <span id="status_item_s1_iv" class="hidden"></span>
+                <input type="text" id="ans_s1_iv" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border border-slate-300 rounded-lg uppercase" placeholder="A/B/C/D" />
+              </div>
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 1 -->
+          <div id="box_pembetulan_s1" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 1
+            </div>
+            <p class="text-[11px] text-slate-600">Sila buat pembetulan padanan gambar rajah blok mesin basuh automatik:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(i) Input</label>
+                <input type="text" id="corr_s1_i" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(ii) Proses</label>
+                <input type="text" id="corr_s1_ii" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(iii) Output 1</label>
+                <input type="text" id="corr_s1_iii" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(iv) Output 2</label>
+                <input type="text" id="corr_s1_iv" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(1)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S1
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_1" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(1)" id="btn_soalan_1" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 1
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 2 -->
+        <div id="soalan_card_2" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 2</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s2" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Rajah menunjukkan langkah-langkah penambahbaikan bagi satu produk mekatronik:<br>
+            <span class="text-xs font-mono font-bold text-teal-800">Membuat lakaran pengubahsuaian ➔ X ➔ Y ➔ Z ➔ Menguji kefungsian pengubahsuaian</span>
+          </p>
+
+          <div class="space-y-3">
+            <p class="text-xs text-slate-600 font-bold">(a) Lengkapkan urutan langkah proses penambahbaikan itu dengan menulis X, Y dan Z pada petak yang disediakan: [3 markah]</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+                <span class="text-xs font-medium text-slate-700">Membuat pengaturcaraan</span>
+                <span id="status_item_s2_y" class="hidden"></span>
+                <input type="text" id="ans_s2_y" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="X/Y/Z" />
+              </div>
+              <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+                <span class="text-xs font-medium text-slate-700">Memilih bahan dan komponen</span>
+                <span id="status_item_s2_x" class="hidden"></span>
+                <input type="text" id="ans_s2_x" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="X/Y/Z" />
+              </div>
+              <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+                <span class="text-xs font-medium text-slate-700">Membina dan memasang komponen</span>
+                <span id="status_item_s2_z" class="hidden"></span>
+                <input type="text" id="ans_s2_z" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="X/Y/Z" />
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-xs font-bold text-slate-700">(b) Nyatakan satu elemen reka bentuk mekatronik: [1 markah]</label>
+                <span id="status_item_s2_b" class="hidden"></span>
+              </div>
+              <input type="text" id="ans_s2_b" class="w-full p-2.5 text-sm border rounded-xl" placeholder="Contoh: Sistem elektrik / elektronik / mekanikal / kawalan dan pengaturcaraan" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 2 -->
+          <div id="box_pembetulan_s2" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 2
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Pengaturcaraan</label>
+                <input type="text" id="corr_s2_y" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="X/Y/Z" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Pilih Bahan</label>
+                <input type="text" id="corr_s2_x" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="X/Y/Z" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Bina & Pasang</label>
+                <input type="text" id="corr_s2_z" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="X/Y/Z" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-700 mb-1">(b) Pembetulan Satu Elemen Mekatronik:</label>
+              <input type="text" id="corr_s2_b" class="w-full p-2 text-xs border border-rose-300 rounded-lg bg-white" placeholder="Nama elemen..." />
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(2)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S2
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_2" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(2)" id="btn_soalan_2" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 2
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 3 -->
+        <div id="soalan_card_3" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 3</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s3" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Tandakan (<strong>/</strong>) bagi kriteria dalam borang kajian keperluan pelanggan yang betul dan (<strong>X</strong>) bagi yang salah pada petak yang disediakan:
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Maklumat pelanggan</span>
+              <span id="status_item_s3_1" class="hidden"></span>
+              <input type="text" id="ans_s3_1" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Jangka masa</span>
+              <span id="status_item_s3_2" class="hidden"></span>
+              <input type="text" id="ans_s3_2" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Persembahan</span>
+              <span id="status_item_s3_3" class="hidden"></span>
+              <input type="text" id="ans_s3_3" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Penambahbaikan</span>
+              <span id="status_item_s3_4" class="hidden"></span>
+              <input type="text" id="ans_s3_4" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 3 -->
+          <div id="box_pembetulan_s3" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 3
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Maklumat Pelanggan</label>
+                <input type="text" id="corr_s3_1" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Jangka Masa</label>
+                <input type="text" id="corr_s3_2" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Persembahan</label>
+                <input type="text" id="corr_s3_3" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Penambahbaikan</label>
+                <input type="text" id="corr_s3_4" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(3)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S3
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_3" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(3)" id="btn_soalan_3" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 3
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 4 -->
+        <div id="soalan_card_4" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 4</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s4" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">Berikut merupakan elemen reka bentuk:</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 p-3 rounded-xl text-xs font-bold text-slate-700 text-center">
+            <div class="p-2 border bg-white rounded-lg">A : Bentuk</div>
+            <div class="p-2 border bg-white rounded-lg">B : Saiz</div>
+            <div class="p-2 border bg-white rounded-lg">C : Ruang</div>
+            <div class="p-2 border bg-white rounded-lg">D : Garisan</div>
+          </div>
+          <p class="text-xs text-slate-600">Padankan elemen reka bentuk dengan pernyataan yang betul dengan menulis <strong>A, B, C</strong> atau <strong>D</strong> pada petak yang disediakan:</p>
+
+          <div class="space-y-3">
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(i) Kawasan antara dua objek atau rongga dalam sesuatu objek</span>
+              <span id="status_item_s4_i" class="hidden"></span>
+              <input type="text" id="ans_s4_i" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(ii) Ukuran atau dimensi bagi sesuatu objek</span>
+              <span id="status_item_s4_ii" class="hidden"></span>
+              <input type="text" id="ans_s4_ii" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(iii) Mempunyai ruang, isipadu dan banyak permukaan</span>
+              <span id="status_item_s4_iii" class="hidden"></span>
+              <input type="text" id="ans_s4_iii" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(iv) Cantuman satu siri titik yang mempunyai panjang dan jarak</span>
+              <span id="status_item_s4_iv" class="hidden"></span>
+              <input type="text" id="ans_s4_iv" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 4 -->
+          <div id="box_pembetulan_s4" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 4
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(i) Rongga/Antara Objek</label>
+                <input type="text" id="corr_s4_i" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(ii) Dimensi/Ukuran</label>
+                <input type="text" id="corr_s4_ii" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(iii) Ruang & Isipadu</label>
+                <input type="text" id="corr_s4_iii" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(iv) Siri Titik</label>
+                <input type="text" id="corr_s4_iv" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="A/B/C/D" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(4)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S4
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_4" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(4)" id="btn_soalan_4" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 4
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 5 -->
+        <div id="soalan_card_5" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 5</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s5" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+              Tandakan (✓) bagi <strong>empat</strong> garis panduan menyediakan jadual kerja yang betul pada petak yang disediakan:
+            </p>
+            <span id="status_item_s5" class="hidden"></span>
+          </div>
+
+          <div class="space-y-2">
+            <label class="flex items-center p-3 bg-slate-50 border rounded-xl space-x-3 cursor-pointer hover:bg-teal-50">
+              <input type="checkbox" id="chk_s5_1" class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4" />
+              <span class="text-xs font-semibold text-slate-800">Mengelakkan kerugian masa dan kos</span>
+            </label>
+            <label class="flex items-center p-3 bg-slate-50 border rounded-xl space-x-3 cursor-pointer hover:bg-teal-50">
+              <input type="checkbox" id="chk_s5_2" class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4" />
+              <span class="text-xs font-semibold text-slate-800">Menentukan aktiviti yang perlu ada di dalam jadual</span>
+            </label>
+            <label class="flex items-center p-3 bg-slate-50 border rounded-xl space-x-3 cursor-pointer hover:bg-teal-50">
+              <input type="checkbox" id="chk_s5_3" class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4" />
+              <span class="text-xs font-semibold text-slate-800">Menyusun aktiviti mengikut keutamaan</span>
+            </label>
+            <label class="flex items-center p-3 bg-slate-50 border rounded-xl space-x-3 cursor-pointer hover:bg-teal-50">
+              <input type="checkbox" id="chk_s5_4" class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4" />
+              <span class="text-xs font-semibold text-slate-800">Menganggar tempoh masa untuk melaksanakan aktiviti</span>
+            </label>
+            <label class="flex items-center p-3 bg-slate-50 border rounded-xl space-x-3 cursor-pointer hover:bg-teal-50">
+              <input type="checkbox" id="chk_s5_5" class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4" />
+              <span class="text-xs font-semibold text-slate-800">Menganggarkan sumber yang diperlukan untuk setiap aktiviti</span>
+            </label>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 5 -->
+          <div id="box_pembetulan_s5" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 5
+            </div>
+            <p class="text-[11px] text-slate-600">Pilih semula 4 garis panduan jadual kerja yang tepat:</p>
+            <div class="space-y-1.5 text-xs">
+              <label class="flex items-center p-2 bg-white border border-rose-200 rounded-lg space-x-2">
+                <input type="checkbox" id="corr_chk_s5_1" class="rounded text-rose-600" />
+                <span>Mengelakkan kerugian masa dan kos</span>
+              </label>
+              <label class="flex items-center p-2 bg-white border border-rose-200 rounded-lg space-x-2">
+                <input type="checkbox" id="corr_chk_s5_2" class="rounded text-rose-600" />
+                <span>Menentukan aktiviti yang perlu ada di dalam jadual</span>
+              </label>
+              <label class="flex items-center p-2 bg-white border border-rose-200 rounded-lg space-x-2">
+                <input type="checkbox" id="corr_chk_s5_3" class="rounded text-rose-600" />
+                <span>Menyusun aktiviti mengikut keutamaan</span>
+              </label>
+              <label class="flex items-center p-2 bg-white border border-rose-200 rounded-lg space-x-2">
+                <input type="checkbox" id="corr_chk_s5_4" class="rounded text-rose-600" />
+                <span>Menganggar tempoh masa untuk melaksanakan aktiviti</span>
+              </label>
+              <label class="flex items-center p-2 bg-white border border-rose-200 rounded-lg space-x-2">
+                <input type="checkbox" id="corr_chk_s5_5" class="rounded text-rose-600" />
+                <span>Menganggarkan sumber yang diperlukan untuk setiap aktiviti</span>
+              </label>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(5)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S5
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_5" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(5)" id="btn_soalan_5" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 5
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 6 -->
+        <div id="soalan_card_6" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 6</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s6" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">Berikut merupakan jenis lukisan kerja dalam penghasilan produk:</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 p-3 rounded-xl text-xs font-bold text-slate-700 text-center">
+            <div class="p-2 border bg-white rounded-lg">P : Ortografik</div>
+            <div class="p-2 border bg-white rounded-lg">Q : Isometrik</div>
+            <div class="p-2 border bg-white rounded-lg">R : Skematik</div>
+            <div class="p-2 border bg-white rounded-lg">S : Ceraian</div>
+          </div>
+          <p class="text-xs text-slate-600">Padankan lukisan kerja itu dengan menulis <strong>P, Q, R</strong> atau <strong>S</strong> pada petak yang disediakan:</p>
+
+          <div class="space-y-3">
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(i) Menunjukkan bentuk objek dalam pandangan 3D</span>
+              <span id="status_item_s6_i" class="hidden"></span>
+              <input type="text" id="ans_s6_i" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="P/Q/R/S" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(ii) Ukuran sebenar dinyatakan sebagai rujukan semasa menghasilkan produk</span>
+              <span id="status_item_s6_ii" class="hidden"></span>
+              <input type="text" id="ans_s6_ii" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="P/Q/R/S" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(iii) Membolehkan pemasangan komponen elektronik lebih mudah dan tepat</span>
+              <span id="status_item_s6_iii" class="hidden"></span>
+              <input type="text" id="ans_s6_iii" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="P/Q/R/S" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 flex-grow">(iv) Menunjukkan hubungan antara setiap komponen pada sesuatu reka bentuk produk</span>
+              <span id="status_item_s6_iv" class="hidden"></span>
+              <input type="text" id="ans_s6_iv" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="P/Q/R/S" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 6 -->
+          <div id="box_pembetulan_s6" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 6
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(i) Pandangan 3D</label>
+                <input type="text" id="corr_s6_i" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="P/Q/R/S" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(ii) Ukuran Sebenar</label>
+                <input type="text" id="corr_s6_ii" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="P/Q/R/S" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(iii) Pasang Elektronik</label>
+                <input type="text" id="corr_s6_iii" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="P/Q/R/S" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">(iv) Hubungan Komponen</label>
+                <input type="text" id="corr_s6_iv" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="P/Q/R/S" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(6)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S6
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_6" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(6)" id="btn_soalan_6" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 6
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 7 -->
+        <div id="soalan_card_7" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 7</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s7" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Tandakan (<strong>/</strong>) bagi padanan prinsip reka bentuk yang betul dan (<strong>X</strong>) bagi yang salah dalam ruang jawapan yang disediakan:
+          </p>
+
+          <div class="space-y-3">
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <div class="text-xs text-slate-700 flex-grow">
+                <strong>Harmoni:</strong> Sesuatu yang memberikan kedamaian
+              </div>
+              <span id="status_item_s7_1" class="hidden"></span>
+              <input type="text" id="ans_s7_1" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <div class="text-xs text-slate-700 flex-grow">
+                <strong>Pengulangan:</strong> Penyusunan elemen yang sama secara berulang
+              </div>
+              <span id="status_item_s7_2" class="hidden"></span>
+              <input type="text" id="ans_s7_2" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <div class="text-xs text-slate-700 flex-grow">
+                <strong>Penekanan:</strong> Perbezaan ketara pada ciri elemen yang digunakan
+              </div>
+              <span id="status_item_s7_3" class="hidden"></span>
+              <input type="text" id="ans_s7_3" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between gap-2">
+              <div class="text-xs text-slate-700 flex-grow">
+                <strong>Keringkasan:</strong> Olahan terhadap idea yang kompleks untuk menghasilkan elemen yang penting sahaja
+              </div>
+              <span id="status_item_s7_4" class="hidden"></span>
+              <input type="text" id="ans_s7_4" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 7 -->
+          <div id="box_pembetulan_s7" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 7
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Harmoni</label>
+                <input type="text" id="corr_s7_1" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Pengulangan</label>
+                <input type="text" id="corr_s7_2" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Penekanan</label>
+                <input type="text" id="corr_s7_3" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Keringkasan</label>
+                <input type="text" id="corr_s7_4" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(7)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S7
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_7" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(7)" id="btn_soalan_7" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 7
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 8 -->
+        <div id="soalan_card_8" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 8</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s8" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Berikut adalah maklumat kos pengeluaran dalam penghasilan seunit produk:
+          </p>
+
+          <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl border text-xs text-center font-bold">
+            <div class="bg-white p-2 border rounded-lg">Kos Upah: RM10.00</div>
+            <div class="bg-white p-2 border rounded-lg">Kos Bahan: RM25.00</div>
+            <div class="bg-white p-2 border rounded-lg">Kos Overhed: RM5.00</div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-xs font-bold text-slate-700">Hitungkan jumlah kos pengeluaran bagi 100 unit produk itu: [4 markah]</label>
+              <span id="status_item_s8" class="hidden"></span>
+            </div>
+            <textarea id="ans_s8" rows="4" class="w-full p-3 text-sm border rounded-xl font-mono" placeholder="Kos pengeluaran seunit = RM25 + RM10 + RM5 = RM40.00&#10;Kos pengeluaran 100 unit = RM40.00 x 100 unit = RM4,000.00"></textarea>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 8 -->
+          <div id="box_pembetulan_s8" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 8
+            </div>
+            <textarea id="corr_s8" rows="3" class="w-full p-2.5 text-xs font-mono border border-rose-300 rounded-lg bg-white" placeholder="Kira semula Kos Seunit & Kos 100 Unit..."></textarea>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(8)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S8
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_8" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(8)" id="btn_soalan_8" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 8
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 9 -->
+        <div id="soalan_card_9" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 9</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s9" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Berikut adalah aliran saluran pemasaran produk:<br>
+            <span class="text-xs font-mono font-bold text-teal-800">Pengeluar ➔ W ➔ Pengangkutan ➔ X ➔ Y ➔ [ Z / Pengguna organisasi ]</span>
+          </p>
+          <p class="text-xs text-slate-600">Lengkapkan aliran pemasaran itu dengan menulis <strong>W, X, Y</strong> dan <strong>Z</strong> pada petak yang disediakan:</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-700">Pengguna akhir</span>
+              <span id="status_item_s9_1" class="hidden"></span>
+              <input type="text" id="ans_s9_1" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-700">Perniagaan</span>
+              <span id="status_item_s9_2" class="hidden"></span>
+              <input type="text" id="ans_s9_2" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-700">Pergudangan</span>
+              <span id="status_item_s9_3" class="hidden"></span>
+              <input type="text" id="ans_s9_3" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+            <div class="p-3 bg-slate-50 border rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-700">Promosi</span>
+              <span id="status_item_s9_4" class="hidden"></span>
+              <input type="text" id="ans_s9_4" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="Huruf" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 9 -->
+          <div id="box_pembetulan_s9" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 9
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Pengguna Akhir</label>
+                <input type="text" id="corr_s9_1" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="W/X/Y/Z" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Perniagaan</label>
+                <input type="text" id="corr_s9_2" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="W/X/Y/Z" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Pergudangan</label>
+                <input type="text" id="corr_s9_3" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="W/X/Y/Z" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Promosi</label>
+                <input type="text" id="corr_s9_4" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="W/X/Y/Z" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(9)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S9
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_9" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(9)" id="btn_soalan_9" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 9
+            </button>
+          </div>
+        </div>
+
+        <!-- SOALAN 10 -->
+        <div id="soalan_card_10" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div class="flex justify-between items-center border-b pb-2">
+            <span class="font-black text-slate-800 text-base">SOALAN 10</span>
+            <div class="flex items-center space-x-2">
+              <span id="badgeNilai_s10" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[4 Markah]</span>
+            </div>
+          </div>
+          <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+            Tandakan (<strong>/</strong>) pada kaedah reka bentuk pengiklanan yang betul dan (<strong>X</strong>) bagi yang salah pada petak yang disediakan:
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Reka bentuk produk</span>
+              <span id="status_item_s10_1" class="hidden"></span>
+              <input type="text" id="ans_s10_1" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Penyampaian fakta</span>
+              <span id="status_item_s10_2" class="hidden"></span>
+              <input type="text" id="ans_s10_2" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Matlamat produk</span>
+              <span id="status_item_s10_3" class="hidden"></span>
+              <input type="text" id="ans_s10_3" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+            <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-xl">
+              <span class="text-xs font-medium text-slate-700">Kiasan atau ibarat</span>
+              <span id="status_item_s10_4" class="hidden"></span>
+              <input type="text" id="ans_s10_4" maxlength="1" class="w-14 p-2 text-center text-sm font-bold border rounded-lg uppercase" placeholder="/ atau X" />
+            </div>
+          </div>
+
+          <!-- RUANGAN PEMBETULAN SOALAN 10 -->
+          <div id="box_pembetulan_s10" class="hidden bg-rose-50/60 border-2 border-rose-200 rounded-2xl p-4 mt-4 space-y-3">
+            <div class="flex items-center text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-pen-ruler mr-2 text-rose-600"></i> Ruang Pembetulan Soalan 10
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Reka Bentuk Produk</label>
+                <input type="text" id="corr_s10_1" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Penyampaian Fakta</label>
+                <input type="text" id="corr_s10_2" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Matlamat Produk</label>
+                <input type="text" id="corr_s10_3" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Kiasan/Ibarat</label>
+                <input type="text" id="corr_s10_4" maxlength="1" class="w-full p-2 text-center font-bold border border-rose-300 rounded-lg uppercase bg-white" placeholder="/ atau X" />
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="hantarPembetulan(10)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Simpan Pembetulan S10
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
+            <span id="badge_status_10" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
+            <button type="button" onclick="hantarSoalan(10)" id="btn_soalan_10" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 10
+            </button>
+          </div>
+        </div>
+
+        <!-- HANTAR KESELURUHAN -->
+        <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 text-center space-y-3 no-print">
+          <p class="text-xs text-slate-500">Anda boleh menghantar kesemua soalan (S1 - S10) sekaligus ke Google Sheet.</p>
+          <button type="button" onclick="submitSemuaJawapan()" id="btnHantarSemua" class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+            <i class="fa-solid fa-paper-plane mr-2"></i> Hantar Semua Jawapan Peperiksaan
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. MOD GURU (ADMIN) -->
+    <section id="guruSection" class="hidden space-y-6">
+      
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+        <div class="flex flex-wrap justify-between items-center gap-3">
+          <div>
+            <h2 class="text-lg font-black text-slate-900 flex items-center">
+              <i class="fa-solid fa-table-cells text-teal-600 mr-2"></i> Matriks Calon Pra UASA 2 (S1 - S10)
+            </h2>
+            <p class="text-xs text-slate-500">Pantau perkembangan calon menjawab secara masa nyata.</p>
+          </div>
+          <button onclick="tarikDariGoogleSheet(true)" id="btnSegerak" class="px-3.5 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold rounded-xl shadow transition flex items-center">
+            <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Segerak Semula
+          </button>
+        </div>
+
+        <div id="statusSegerakBox" class="text-xs font-medium text-slate-500 bg-slate-50 p-2 rounded-lg border">
+          <i class="fa-solid fa-info-circle mr-1 text-teal-600"></i> Klik 'Segerak Semula' untuk muat turun jawapan terkini Google Sheet.
+        </div>
+
+        <div class="grid grid-cols-5 sm:grid-cols-10 gap-1.5 text-center bg-slate-50 p-3 rounded-xl border text-[11px]" id="barStatistikSoalan"></div>
+
+        <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-sm max-h-[480px]">
+          <table class="min-w-full divide-y divide-slate-200 text-xs">
+            <thead class="bg-slate-800 text-white sticky top-0">
+              <tr>
+                <th class="py-2.5 px-3 text-left font-bold w-8">Bil</th>
+                <th class="py-2.5 px-3 text-left font-bold">Nama Murid</th>
+                <th class="py-2.5 px-2 text-center font-bold">S1</th>
+                <th class="py-2.5 px-2 text-center font-bold">S2</th>
+                <th class="py-2.5 px-2 text-center font-bold">S3</th>
+                <th class="py-2.5 px-2 text-center font-bold">S4</th>
+                <th class="py-2.5 px-2 text-center font-bold">S5</th>
+                <th class="py-2.5 px-2 text-center font-bold">S6</th>
+                <th class="py-2.5 px-2 text-center font-bold">S7</th>
+                <th class="py-2.5 px-2 text-center font-bold">S8</th>
+                <th class="py-2.5 px-2 text-center font-bold">S9</th>
+                <th class="py-2.5 px-2 text-center font-bold">S10</th>
+                <th class="py-2.5 px-3 text-center font-bold">Kemajuan</th>
+                <th class="py-2.5 px-3 text-center font-bold">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyMatriksCalon" class="divide-y divide-slate-200 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANEL PENANDAAN -->
+      <div id="panelMenandaGuru" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <h2 class="text-xl font-black text-slate-900 flex items-center">
+              <i class="fa-solid fa-robot text-amber-500 mr-2"></i> Ruang Semakan & Penandaan AI
+            </h2>
+            <p class="text-xs text-slate-500">Cadangan markah berasaskan skema UASA 2 RBT Tingkatan 3.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="terapkanSemuaCadanganAI()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-teal-950 text-xs font-black rounded-xl shadow transition">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Terapkan Semua Cadangan AI
+            </button>
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow transition">
+              <i class="fa-solid fa-print mr-1.5"></i> Cetak
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Calon yang Sedang Ditanda:</label>
+          <select id="selectMuridMenanda" onchange="muatJawapanMuridDipilih()" class="px-3.5 py-2.5 text-sm border rounded-xl bg-slate-50 font-bold text-slate-800 w-full sm:w-auto min-w-[320px]">
+            <option value="">-- Sila Pilih Calon --</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Jumlah Markah</span>
+            <p id="liveJumlahMarkah" class="text-2xl font-black text-emerald-600">0 / 40</p>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Peratusan (%)</span>
+            <p id="livePeratusan" class="text-2xl font-black text-teal-700">0%</p>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Gred</span>
+            <p id="liveGred" class="text-2xl font-black text-amber-500">-</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="containerPenandaan" class="space-y-6"></div>
+
+      <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 space-y-4">
+        <div>
+          <label class="block text-sm font-bold text-slate-800 mb-1">Ulasan / Maklum Balas Guru kepada Calon:</label>
+          <textarea id="ulasanGuru" rows="3" class="w-full p-3 text-sm border rounded-xl focus:ring-2 focus:ring-amber-500" placeholder="Tuliskan ulasan pencapaian calon di sini..."></textarea>
+        </div>
+        <div class="flex justify-end">
+          <button onclick="simpanPemarkahanGuru()" class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-lg transition">
+            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Rekod Markah & Hantar ke Portal Murid
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="bg-slate-200 text-slate-600 text-[11px] text-center py-4 border-t no-print">
+    Latihan Pra UASA 2 Tingkatan 3 &copy; 2026. Dikuasakan oleh GitHub Pages & Google Apps Script.
+  </footer>
+
+  <!-- SKRIP JAVASCRIPT SISTEM -->
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz74rhc1ySBS4p4YLADG4yZg5tqwsqxDemaR-jssgN_4F6oDWS5QQSHrq-GsyqmWwHEQg/exec";
+
+    const SENARAI_MURID = [
+      { nama: "ADAM HAFIY BIN ROHAIZAD", ic: "111016010759" },
+      { nama: "AHMAD IRFAN DANIEL BIN AHMAD FAZRIN", ic: "111105010857" },
+      { nama: "CHIU YIT JEN", ic: "110812010851" },
+      { nama: "CHUO YI TIAN", ic: "110505010894" },
+      { nama: "CLEMENT CALEB A/L CHRISTOPHER", ic: "110408011481" },
+      { nama: "DHIYA THAHIRA BINTI MOHD NORIZAN", ic: "111015010618" },
+      { nama: "HII HE MEI", ic: "110216011102" },
+      { nama: "HONG ZI YI", ic: "110321011550" },
+      { nama: "MIA SARI BINTI MOHD ZAMRY", ic: "111223010188" },
+      { nama: "MUHAMMAD AMMAR ISLAH BIN HUSARMAN", ic: "110413011769" },
+      { nama: "MUHAMMAD AQIL BIN MUHAMAD AZWAN", ic: "110928010677" },
+      { nama: "MUHAMMAD DANIAL BIN MAZLAN", ic: "111011020261" },
+      { nama: "MUHAMMAD FAZREE BIN MOHD YUNUS", ic: "111006011475" },
+      { nama: "MUHAMMAD RIFQY BIN HEDLY", ic: "110817010527" },
+      { nama: "MUHAMMAD SYAHMI BIN NOR EMEY", ic: "110717010503" },
+      { nama: "MUHAMMAD ZULFAHMI HELMI BIN MOHD HUZAIRIE", ic: "110505011109" },
+      { nama: "NAUFAL NAZHAN BIN NOR HAFIZ", ic: "110214011125" },
+      { nama: "NUR AIN QALESYA BINTI RUZAHIRUDIN", ic: "120101110396" },
+      { nama: "NUR AZIETUL BEEVI BINTI ABDULLAH", ic: "110405011574" },
+      { nama: "NUR HANIS QAISARA BINTI NAZRUL IZWAN", ic: "110128080618" },
+      { nama: "NUR ZAHIDAH HUSNA BINTI MOHD HAIDHIR", ic: "110409010472" },
+      { nama: "NURANI INSYIRAH BINTI RAZALI", ic: "110628011010" },
+      { nama: "NURHAFISAH BINTI ABDUL KARIM", ic: "111224010892" },
+      { nama: "POORANI A/P K NARAYANAN", ic: "110221010980" },
+      { nama: "RAM JAGANNATH A/L SURESH", ic: "111113011083" },
+      { nama: "SOH FEI XUAN", ic: "111005010358" },
+      { nama: "ADRIAN", ic: "111207060759" },
+      { nama: "AMMAR QALISH BIN KHAIRUL ANUAR", ic: "111217010405" },
+      { nama: "FOM YU TONG", ic: "111116011660" },
+      { nama: "HAIQAL IRWAN BIN MOHAMAD AKMAL", ic: "111127011199" },
+      { nama: "KHOO JUN HONG", ic: "110523010089" },
+      { nama: "MIA NUR ASHEFFA BINTI MOHAMAD AZMI", ic: "110409010894" },
+      { nama: "MOHAMAD HARITH HAIKAL BIN ABDULLAH", ic: "110223012007" },
+      { nama: "MUHAMAD PUTRA MOKHTAR BUKHARY AL DIN BIN ZAINUDDIN", ic: "110812140947" },
+      { nama: "MUHAMMAD FAREDZS ISKANDAR BIN REDZUAN", ic: "110409010747" },
+      { nama: "MUHAMMAD FARISH BIN MOHD FAZELLY", ic: "110119011581" },
+      { nama: "MUHAMMAD RAIF BIN ABDUL RAHMAN", ic: "110623011177" },
+      { nama: "MUHAMMAD SYAMIL ESHAN BIN MUHAMAD RAHMAT", ic: "110904011077" },
+      { nama: "NITISHKUMAR A/L MURGA", ic: "111029011435" },
+      { nama: "NUR DANIA ELIESYA BINTI ROSLI", ic: "110417011424" },
+      { nama: "NUR HAIRA", ic: "111224010622" },
+      { nama: "NUR SYASYA NABILAH BINTI SHAHDAN", ic: "110817010826" },
+      { nama: "NURATIKA ADILA BINTI AZHAR", ic: "110408010286" },
+      { nama: "NURHASHA UMAIRAH BINTI NORHASHIMI", ic: "111012140580" },
+      { nama: "NURUL ATIKAH BINTI MINHED", ic: "110201010932" },
+      { nama: "SITI DAMIA SHOLIHAH BINTI DARHAM", ic: "111228010822" },
+      { nama: "TAN ZE HONG", ic: "110825011247" },
+      { nama: "UMMU QALSOM BINTI ROHIZAD", ic: "110512050376" },
+      { nama: "YOW SING ONN", ic: "110914011441" }
+    ];
+
+    const ALL_QUESTION_KEYS = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10"];
+
+    function normalizeIc(val) {
+      if (!val) return "";
+      let digits = String(val).replace(/[^0-9]/g, "");
+      if (digits.length === 11) digits = "0" + digits;
+      return digits;
+    }
+
+    function cleanName(val) {
+      return String(val || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    }
+
+    // SKEMA BAHARU (BERPANDUKAN SKEMA.PDF)
+    const SKEMA_DATA = {
+      "s1": {
+        tajuk: "Soalan 1 - Gambar Rajah Blok Mesin Basuh",
+        max: 4,
+        kriteria: [
+          { words: ["c"], point: 1, label: "(i) Input: C (Penderia) [1m]" },
+          { words: ["a"], point: 1, label: "(ii) Proses: A (Mikropengawal) [1m]" },
+          { words: ["b"], point: 1, label: "(iii) Output: B (Motor AU) [1m]" },
+          { words: ["d"], point: 1, label: "(iv) Output: D (Takal dan tali sawat) [1m]" }
+        ],
+        skema: `[4 Markah]:\nInput: C (Penderia) [1m]\nProses: A (Mikropengawal) [1m]\nOutput: B (Motor AU) [1m]\nOutput: D (Takal dan tali sawat) [1m]`
+      },
+      "s2": {
+        tajuk: "Soalan 2 - Langkah Penambahbaikan & Elemen Mekatronik",
+        max: 4,
+        kriteria: [
+          { words: ["y"], point: 1, label: "Pengaturcaraan = Y [1m]" },
+          { words: ["x"], point: 1, label: "Pilih bahan = X [1m]" },
+          { words: ["z"], point: 1, label: "Bina & pasang = Z [1m]" },
+          { words: ["elektrik", "elektronik", "mekanikal", "kawalan", "pengaturcaraan"], point: 1, label: "(b) Satu elemen mekatronik [1m]" }
+        ],
+        skema: `[4 Markah]:\n(a) Urutan [3m]:\n• Membuat pengaturcaraan = Y [1m]\n• Memilih bahan dan komponen = X [1m]\n• Membina dan memasang komponen = Z [1m]\n(b) Satu elemen [1m]: Elektrik / Elektronik / Mekanikal / Kawalan dan pengaturcaraan`
+      },
+      "s3": {
+        tajuk: "Soalan 3 - Borang Kajian Keperluan Pelanggan",
+        max: 4,
+        kriteria: [
+          { words: ["/"], point: 1, label: "Maklumat pelanggan: / [1m]" },
+          { words: ["x"], point: 1, label: "Jangka masa: X [1m]" },
+          { words: ["x"], point: 1, label: "Persembahan: X [1m]" },
+          { words: ["/"], point: 1, label: "Penambahbaikan: / [1m]" }
+        ],
+        skema: `[4 Markah]:\n• Maklumat pelanggan: / [1m]\n• Jangka masa: X [1m]\n• Persembahan: X [1m]\n• Penambahbaikan: / [1m]`
+      },
+      "s4": {
+        tajuk: "Soalan 4 - Padanan Elemen Reka Bentuk",
+        max: 4,
+        kriteria: [
+          { words: ["c"], point: 1, label: "(i) C (Ruang) [1m]" },
+          { words: ["b"], point: 1, label: "(ii) B (Saiz) [1m]" },
+          { words: ["a"], point: 1, label: "(iii) A (Bentuk) [1m]" },
+          { words: ["d"], point: 1, label: "(iv) D (Garisan) [1m]" }
+        ],
+        skema: `[4 Markah]:\n(i) Kawasan antara dua objek / rongga = C (Ruang) [1m]\n(ii) Ukuran atau dimensi = B (Saiz) [1m]\n(iii) Ruang, isipadu & banyak permukaan = A (Bentuk) [1m]\n(iv) Cantuman satu siri titik = D (Garisan) [1m]`
+      },
+      "s5": {
+        tajuk: "Soalan 5 - Garis Panduan Jadual Kerja",
+        max: 4,
+        kriteria: [
+          { words: ["aktiviti perlu ada"], point: 1, label: "Menentukan aktiviti yang perlu ada [1m]" },
+          { words: ["keutamaan"], point: 1, label: "Menyusun aktiviti mengikut keutamaan [1m]" },
+          { words: ["tempoh masa"], point: 1, label: "Menganggar tempoh masa [1m]" },
+          { words: ["sumber"], point: 1, label: "Menganggarkan sumber yang diperlukan [1m]" }
+        ],
+        skema: `[4 Markah]:\nTanda (✓) bagi 4 pilihan berikut:\n• Menentukan aktiviti yang perlu ada di dalam jadual [1m]\n• Menyusun aktiviti mengikut keutamaan [1m]\n• Menganggar tempoh masa untuk melaksanakan aktiviti [1m]\n• Menganggarkan sumber yang diperlukan untuk setiap aktiviti [1m]`
+      },
+      "s6": {
+        tajuk: "Soalan 6 - Jenis Lukisan Kerja",
+        max: 4,
+        kriteria: [
+          { words: ["q"], point: 1, label: "(i) Q (Isometrik) [1m]" },
+          { words: ["p"], point: 1, label: "(ii) P (Ortografik) [1m]" },
+          { words: ["r"], point: 1, label: "(iii) R (Skematik) [1m]" },
+          { words: ["s"], point: 1, label: "(iv) S (Ceraian) [1m]" }
+        ],
+        skema: `[4 Markah]:\n(i) Bentuk objek pandangan 3D = Q (Isometrik) [1m]\n(ii) Ukuran sebenar rujukan = P (Ortografik) [1m]\n(iii) Pemasangan elektronik tepat = R (Skematik) [1m]\n(iv) Hubungan antara setiap komponen = S (Ceraian) [1m]`
+      },
+      "s7": {
+        tajuk: "Soalan 7 - Padanan Prinsip Reka Bentuk",
+        max: 4,
+        kriteria: [
+          { words: ["/"], point: 1, label: "Harmoni: / [1m]" },
+          { words: ["/"], point: 1, label: "Pengulangan: / [1m]" },
+          { words: ["x"], point: 1, label: "Penekanan: X [1m]" },
+          { words: ["/"], point: 1, label: "Keringkasan: / [1m]" }
+        ],
+        skema: `[4 Markah]:\n• Harmoni = / [1m]\n• Pengulangan = / [1m]\n• Penekanan = X (Perbezaan ketara ialah Kontras) [1m]\n• Keringkasan = / [1m]`
+      },
+      "s8": {
+        tajuk: "Soalan 8 - Pengiraan Kos Pengeluaran (100 Unit)",
+        max: 4,
+        kriteria: [
+          { words: ["40", "40.00"], point: 2, label: "Kos seunit = RM40.00 [2m]" },
+          { words: ["4000", "4,000", "4000.00", "4,000.00"], point: 2, label: "Kos 100 unit = RM4,000.00 [2m]" }
+        ],
+        skema: `[4 Markah]:\n• Kos seunit = Kos bahan (RM25) + Kos upah (RM10) + Kos overhed (RM5) = RM40.00 [2m]\n• Kos pengeluaran 100 unit = RM40.00 x 100 unit = RM4,000.00 [2m]`
+      },
+      "s9": {
+        tajuk: "Soalan 9 - Aliran Saluran Pemasaran Produk",
+        max: 4,
+        kriteria: [
+          { words: ["z"], point: 1, label: "Pengguna akhir = Z [1m]" },
+          { words: ["y"], point: 1, label: "Perniagaan = Y [1m]" },
+          { words: ["w"], point: 1, label: "Pergudangan = W [1m]" },
+          { words: ["x"], point: 1, label: "Promosi = X [1m]" }
+        ],
+        skema: `[4 Markah]:\n• Pengguna akhir = Z [1m]\n• Perniagaan = Y [1m]\n• Pergudangan = W [1m]\n• Promosi = X [1m]\n(Aliran: Pengeluar ➔ W ➔ Pengangkutan ➔ X ➔ Y ➔ Z)`
+      },
+      "s10": {
+        tajuk: "Soalan 10 - Kaedah Reka Bentuk Pengiklanan",
+        max: 4,
+        kriteria: [
+          { words: ["x"], point: 1, label: "Reka bentuk produk: X [1m]" },
+          { words: ["/"], point: 1, label: "Penyampaian fakta: / [1m]" },
+          { words: ["/"], point: 1, label: "Matlamat produk: / [1m]" },
+          { words: ["/"], point: 1, label: "Kiasan atau ibarat: / [1m]" }
+        ],
+        skema: `[4 Markah]:\n• Reka bentuk produk = X [1m]\n• Penyampaian fakta = / [1m]\n• Matlamat produk = / [1m]\n• Kiasan atau ibarat = / [1m]`
+      }
+    };
+
+    let currentUser = null;
+    let currentRole = null;
+    let storedSubmissions = {};
+
+    window.addEventListener("DOMContentLoaded", () => {
+      isiDropdownMurid();
+      binaBorangPenandaanGuru();
+      binaMatriksStatusAdmin();
+
+      document.querySelectorAll("#soalanForm textarea, #soalanForm input").forEach(el => {
+        el.addEventListener("input", simpanAutoLocal);
+      });
+    });
+
+    function isiDropdownMurid() {
+      const selM = document.getElementById("selectNamaMurid");
+      const selG = document.getElementById("selectMuridMenanda");
+      selM.innerHTML = '<option value="">-- Sila Pilih Nama --</option>';
+      selG.innerHTML = '<option value="">-- Sila Pilih Calon --</option>';
+
+      SENARAI_MURID.forEach(m => {
+        const o1 = document.createElement("option");
+        o1.value = m.nama;
+        o1.textContent = m.nama;
+        selM.appendChild(o1);
+
+        const o2 = document.createElement("option");
+        o2.value = m.nama;
+        o2.textContent = m.nama;
+        selG.appendChild(o2);
+      });
+    }
+
+    function switchLoginTab(role) {
+      const tabM = document.getElementById("tabMuridBtn");
+      const tabG = document.getElementById("tabGuruBtn");
+      const fM = document.getElementById("formMurid");
+      const fG = document.getElementById("formGuru");
+
+      if (role === 'murid') {
+        tabM.className = "w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition bg-white text-teal-950 shadow";
+        tabG.className = "w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition text-slate-500 hover:text-teal-950";
+        fM.classList.remove("hidden");
+        fG.classList.add("hidden");
+      } else {
+        tabG.className = "w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition bg-white text-teal-950 shadow";
+        tabM.className = "w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition text-slate-500 hover:text-teal-950";
+        fG.classList.remove("hidden");
+        fM.classList.add("hidden");
+      }
+    }
+
+    async function loginMurid() {
+      const nama = document.getElementById("selectNamaMurid").value;
+      const icInput = normalizeIc(document.getElementById("inputIcMurid").value);
+
+      if (!nama) {
+        tunjukMesej("Sila pilih nama anda.", "rose");
+        return;
+      }
+
+      const match = SENARAI_MURID.find(m => m.nama === nama);
+      if (match && normalizeIc(match.ic) === icInput) {
+        currentUser = match;
+        currentRole = 'murid';
+        
+        const btn = document.getElementById("btnLoginMurid");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuatkan data...';
+
+        document.getElementById("loginSection").classList.add("hidden");
+        document.getElementById("examSection").classList.remove("hidden");
+        document.getElementById("userBadge").classList.remove("hidden");
+        document.getElementById("badgeNama").textContent = currentUser.nama;
+        document.getElementById("badgePeranan").textContent = "CALON RBT TINGKATAN 3";
+
+        muatAutoLocal();
+        await segerakKemajuanDanMarkahMurid(currentUser.ic);
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Masuk Portal';
+      } else {
+        tunjukMesej("Kata laluan tidak tepat. Sila semak semula nombor kad pengenalan anda.", "rose");
+      }
+    }
+
+    function loginGuru() {
+      const pass = document.getElementById("inputPassGuru").value.trim();
+      if (pass === "adminrbt32") {
+        currentUser = { nama: "Guru Pentadbir" };
+        currentRole = 'guru';
+        tunjukMesej("Akses Pentadbir disahkan!", "emerald");
+        setTimeout(() => {
+          document.getElementById("loginSection").classList.add("hidden");
+          document.getElementById("guruSection").classList.remove("hidden");
+          document.getElementById("userBadge").classList.remove("hidden");
+          document.getElementById("badgeNama").textContent = "Cikgu Penanda RBT";
+          document.getElementById("badgePeranan").textContent = "PENTADBIR GURU";
+          tarikDariGoogleSheet(false);
+        }, 400);
+      } else {
+        tunjukMesej("Kata laluan pentadbir tidak sah.", "rose");
+      }
+    }
+
+    function logout() {
+      if (confirm("Adakah anda pasti ingin log keluar?")) {
+        currentUser = null;
+        currentRole = null;
+        document.getElementById("loginSection").classList.remove("hidden");
+        document.getElementById("examSection").classList.add("hidden");
+        document.getElementById("guruSection").classList.add("hidden");
+        document.getElementById("userBadge").classList.add("hidden");
+        document.getElementById("panelKeputusanMurid").classList.add("hidden");
+        document.getElementById("inputPassGuru").value = "";
+        document.getElementById("inputIcMurid").value = "";
+      }
+    }
+
+    function tunjukMesej(teks, warna) {
+      const el = document.getElementById("loginMsg");
+      el.textContent = teks;
+      el.className = `mt-4 text-center text-xs font-bold text-${warna}-600 block`;
+    }
+
+    function kumpulJawapanSoalan(sNo) {
+      if (sNo === 1) {
+        return [
+          document.getElementById("ans_s1_i").value.toUpperCase(),
+          document.getElementById("ans_s1_ii").value.toUpperCase(),
+          document.getElementById("ans_s1_iii").value.toUpperCase(),
+          document.getElementById("ans_s1_iv").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (sNo === 2) {
+        return `(a) Pengaturcaraan:${document.getElementById("ans_s2_y").value.toUpperCase()}, PilihBahan:${document.getElementById("ans_s2_x").value.toUpperCase()}, BinaPasang:${document.getElementById("ans_s2_z").value.toUpperCase()} | (b) ${document.getElementById("ans_s2_b").value}`;
+      } else if (sNo === 3) {
+        return [
+          document.getElementById("ans_s3_1").value.toUpperCase(),
+          document.getElementById("ans_s3_2").value.toUpperCase(),
+          document.getElementById("ans_s3_3").value.toUpperCase(),
+          document.getElementById("ans_s3_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (sNo === 4) {
+        return [
+          document.getElementById("ans_s4_i").value.toUpperCase(),
+          document.getElementById("ans_s4_ii").value.toUpperCase(),
+          document.getElementById("ans_s4_iii").value.toUpperCase(),
+          document.getElementById("ans_s4_iv").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (sNo === 5) {
+        let arr = [];
+        if (document.getElementById("chk_s5_1").checked) arr.push("Mengelakkan kerugian masa dan kos");
+        if (document.getElementById("chk_s5_2").checked) arr.push("Menentukan aktiviti yang perlu ada");
+        if (document.getElementById("chk_s5_3").checked) arr.push("Menyusun aktiviti mengikut keutamaan");
+        if (document.getElementById("chk_s5_4").checked) arr.push("Menganggar tempoh masa");
+        if (document.getElementById("chk_s5_5").checked) arr.push("Menganggarkan sumber");
+        return arr.join(", ");
+      } else if (sNo === 6) {
+        return [
+          document.getElementById("ans_s6_i").value.toUpperCase(),
+          document.getElementById("ans_s6_ii").value.toUpperCase(),
+          document.getElementById("ans_s6_iii").value.toUpperCase(),
+          document.getElementById("ans_s6_iv").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (sNo === 7) {
+        return [
+          document.getElementById("ans_s7_1").value.toUpperCase(),
+          document.getElementById("ans_s7_2").value.toUpperCase(),
+          document.getElementById("ans_s7_3").value.toUpperCase(),
+          document.getElementById("ans_s7_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (sNo === 8) {
+        return document.getElementById("ans_s8").value;
+      } else if (sNo === 9) {
+        return [
+          document.getElementById("ans_s9_1").value.toUpperCase(),
+          document.getElementById("ans_s9_2").value.toUpperCase(),
+          document.getElementById("ans_s9_3").value.toUpperCase(),
+          document.getElementById("ans_s9_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (sNo === 10) {
+        return [
+          document.getElementById("ans_s10_1").value.toUpperCase(),
+          document.getElementById("ans_s10_2").value.toUpperCase(),
+          document.getElementById("ans_s10_3").value.toUpperCase(),
+          document.getElementById("ans_s10_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      }
+      return "";
+    }
+
+    function pasangJawapanSoalan(sNo, strVal) {
+      if (!strVal) return;
+      if (sNo === 1) {
+        const parts = strVal.split(" | ");
+        if (parts[0]) document.getElementById("ans_s1_i").value = parts[0];
+        if (parts[1]) document.getElementById("ans_s1_ii").value = parts[1];
+        if (parts[2]) document.getElementById("ans_s1_iii").value = parts[2];
+        if (parts[3]) document.getElementById("ans_s1_iv").value = parts[3];
+      } else if (sNo === 2) {
+        const mY = strVal.match(/Pengaturcaraan:([XYZ])/i); if (mY) document.getElementById("ans_s2_y").value = mY[1].toUpperCase();
+        const mX = strVal.match(/PilihBahan:([XYZ])/i); if (mX) document.getElementById("ans_s2_x").value = mX[1].toUpperCase();
+        const mZ = strVal.match(/BinaPasang:([XYZ])/i); if (mZ) document.getElementById("ans_s2_z").value = mZ[1].toUpperCase();
+        if (strVal.includes(" | (b) ")) {
+          document.getElementById("ans_s2_b").value = strVal.split(" | (b) ")[1];
+        }
+      } else if (sNo === 3) {
+        const p = strVal.split(" | ");
+        if (p[0]) document.getElementById("ans_s3_1").value = p[0];
+        if (p[1]) document.getElementById("ans_s3_2").value = p[1];
+        if (p[2]) document.getElementById("ans_s3_3").value = p[2];
+        if (p[3]) document.getElementById("ans_s3_4").value = p[3];
+      } else if (sNo === 4) {
+        const p = strVal.split(" | ");
+        if (p[0]) document.getElementById("ans_s4_i").value = p[0];
+        if (p[1]) document.getElementById("ans_s4_ii").value = p[1];
+        if (p[2]) document.getElementById("ans_s4_iii").value = p[2];
+        if (p[3]) document.getElementById("ans_s4_iv").value = p[3];
+      } else if (sNo === 5) {
+        document.getElementById("chk_s5_1").checked = strVal.includes("Mengelakkan kerugian masa");
+        document.getElementById("chk_s5_2").checked = strVal.includes("Menentukan aktiviti");
+        document.getElementById("chk_s5_3").checked = strVal.includes("keutamaan");
+        document.getElementById("chk_s5_4").checked = strVal.includes("tempoh masa");
+        document.getElementById("chk_s5_5").checked = strVal.includes("sumber");
+      } else if (sNo === 6) {
+        const p = strVal.split(" | ");
+        if (p[0]) document.getElementById("ans_s6_i").value = p[0];
+        if (p[1]) document.getElementById("ans_s6_ii").value = p[1];
+        if (p[2]) document.getElementById("ans_s6_iii").value = p[2];
+        if (p[3]) document.getElementById("ans_s6_iv").value = p[3];
+      } else if (sNo === 7) {
+        const p = strVal.split(" | ");
+        if (p[0]) document.getElementById("ans_s7_1").value = p[0];
+        if (p[1]) document.getElementById("ans_s7_2").value = p[1];
+        if (p[2]) document.getElementById("ans_s7_3").value = p[2];
+        if (p[3]) document.getElementById("ans_s7_4").value = p[3];
+      } else if (sNo === 8) {
+        document.getElementById("ans_s8").value = strVal;
+      } else if (sNo === 9) {
+        const p = strVal.split(" | ");
+        if (p[0]) document.getElementById("ans_s9_1").value = p[0];
+        if (p[1]) document.getElementById("ans_s9_2").value = p[1];
+        if (p[2]) document.getElementById("ans_s9_3").value = p[2];
+        if (p[3]) document.getElementById("ans_s9_4").value = p[3];
+      } else if (sNo === 10) {
+        const p = strVal.split(" | ");
+        if (p[0]) document.getElementById("ans_s10_1").value = p[0];
+        if (p[1]) document.getElementById("ans_s10_2").value = p[1];
+        if (p[2]) document.getElementById("ans_s10_3").value = p[2];
+        if (p[3]) document.getElementById("ans_s10_4").value = p[3];
+      }
+    }
+
+    function simpanAutoLocal() {
+      if (!currentUser || currentRole !== 'murid') return;
+      const j = {};
+      for (let sNo = 1; sNo <= 10; sNo++) {
+        j[`s${sNo}`] = kumpulJawapanSoalan(sNo);
+      }
+      localStorage.setItem(`jawapan_rbt2_${normalizeIc(currentUser.ic)}`, JSON.stringify(j));
+      document.getElementById("saveStatus").innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Tersimpan di peranti';
+    }
+
+    function muatAutoLocal() {
+      if (!currentUser) return;
+      const str = localStorage.getItem(`jawapan_rbt2_${normalizeIc(currentUser.ic)}`);
+      if (str) {
+        try {
+          const d = JSON.parse(str);
+          for (let sNo = 1; sNo <= 10; sNo++) {
+            if (d[`s${sNo}`]) pasangJawapanSoalan(sNo, d[`s${sNo}`]);
+          }
+        } catch(e){}
+      }
+    }
+
+    function paparkanSemakanDanPembetulan(soalanNo, subItemsStatus, isOverallCorrect) {
+      Object.keys(subItemsStatus).forEach(itemId => {
+        const badgeEl = document.getElementById(`status_item_${itemId}`);
+        if (badgeEl) {
+          const isBetul = subItemsStatus[itemId];
+          badgeEl.classList.remove("hidden");
+          if (isBetul) {
+            badgeEl.innerHTML = '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-black text-xs inline-flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-1"></i> Betul</span>';
+          } else {
+            badgeEl.innerHTML = '<span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-black text-xs inline-flex items-center"><i class="fa-solid fa-xmark text-rose-600 mr-1"></i> Salah</span>';
+          }
+        }
+      });
+
+      const boxPembetulan = document.getElementById(`box_pembetulan_s${soalanNo}`);
+      if (boxPembetulan) {
+        if (!isOverallCorrect) {
+          boxPembetulan.classList.remove("hidden");
+        } else {
+          boxPembetulan.classList.add("hidden");
+        }
+      }
+    }
+
+    async function segerakKemajuanDanMarkahMurid(ic) {
+      const st = document.getElementById("saveStatus");
+      st.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyemak status di Google Sheet...';
+      const cleanIc = normalizeIc(ic);
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=get_student_answers&nokp=${cleanIc}&_t=${Date.now()}`);
+        const data = await res.json();
+
+        if (data.status === "found" && data.answers) {
+          for (let sNo = 1; sNo <= 10; sNo++) {
+            const val = data.answers[`s${sNo}`];
+            if (val) {
+              pasangJawapanSoalan(sNo, val);
+              const badge = document.getElementById(`badge_status_${sNo}`);
+              if (badge) {
+                badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Disimpan di Awan';
+                badge.className = "text-xs text-emerald-700 font-bold";
+              }
+            }
+          }
+        }
+
+        if (data.result) {
+          const r = data.result;
+          const panel = document.getElementById("panelKeputusanMurid");
+          panel.classList.remove("hidden");
+
+          const markah = parseFloat(r.jumlahMarkah) || 0;
+          const peratus = ((markah / 40) * 100).toFixed(1);
+
+          document.getElementById("skorMuridJumlah").textContent = `${markah} / 40`;
+          document.getElementById("skorMuridPeratus").textContent = `${peratus}%`;
+          document.getElementById("skorMuridGred").textContent = r.gred;
+          document.getElementById("teksUlasanGuruMurid").textContent = r.ulasan || "(Tiada ulasan tambahan)";
+          if (r.tarikhTanda) {
+            document.getElementById("tarikhTandaMurid").textContent = "Tarikh Ditanda: " + new Date(r.tarikhTanda).toLocaleString("ms-MY");
+          }
+
+          if (r.markahPerItem) {
+            Object.keys(r.markahPerItem).forEach(k => {
+              const bNilai = document.getElementById(`badgeNilai_${k}`);
+              if (bNilai) {
+                bNilai.textContent = `Markah: ${r.markahPerItem[k]} / ${SKEMA_DATA[k].max}m`;
+                bNilai.classList.remove("hidden");
+              }
+            });
+
+            // PENILAIAN ITEM SEBELUM PEMBETULAN
+            const s1_1 = document.getElementById("ans_s1_i").value.toUpperCase() === "C";
+            const s1_2 = document.getElementById("ans_s1_ii").value.toUpperCase() === "A";
+            const s1_3 = document.getElementById("ans_s1_iii").value.toUpperCase() === "B";
+            const s1_4 = document.getElementById("ans_s1_iv").value.toUpperCase() === "D";
+            paparkanSemakanDanPembetulan(1, { "s1_i": s1_1, "s1_ii": s1_2, "s1_iii": s1_3, "s1_iv": s1_4 }, (s1_1 && s1_2 && s1_3 && s1_4));
+
+            const s2_y = document.getElementById("ans_s2_y").value.toUpperCase() === "Y";
+            const s2_x = document.getElementById("ans_s2_x").value.toUpperCase() === "X";
+            const s2_z = document.getElementById("ans_s2_z").value.toUpperCase() === "Z";
+            const s2_b = (r.markahPerItem["s2"] || 0) >= 4;
+            paparkanSemakanDanPembetulan(2, { "s2_y": s2_y, "s2_x": s2_x, "s2_z": s2_z, "s2_b": s2_b }, (s2_y && s2_x && s2_z && s2_b));
+
+            const s3_1 = ["/", "✓"].includes(document.getElementById("ans_s3_1").value);
+            const s3_2 = document.getElementById("ans_s3_2").value.toUpperCase() === "X";
+            const s3_3 = document.getElementById("ans_s3_3").value.toUpperCase() === "X";
+            const s3_4 = ["/", "✓"].includes(document.getElementById("ans_s3_4").value);
+            paparkanSemakanDanPembetulan(3, { "s3_1": s3_1, "s3_2": s3_2, "s3_3": s3_3, "s3_4": s3_4 }, (s3_1 && s3_2 && s3_3 && s3_4));
+
+            const s4_1 = document.getElementById("ans_s4_i").value.toUpperCase() === "C";
+            const s4_2 = document.getElementById("ans_s4_ii").value.toUpperCase() === "B";
+            const s4_3 = document.getElementById("ans_s4_iii").value.toUpperCase() === "A";
+            const s4_4 = document.getElementById("ans_s4_iv").value.toUpperCase() === "D";
+            paparkanSemakanDanPembetulan(4, { "s4_i": s4_1, "s4_ii": s4_2, "s4_iii": s4_3, "s4_iv": s4_4 }, (s4_1 && s4_2 && s4_3 && s4_4));
+
+            const s5Score = (r.markahPerItem["s5"] || 0);
+            paparkanSemakanDanPembetulan(5, { "s5": s5Score >= 4 }, s5Score >= 4);
+
+            const s6_1 = document.getElementById("ans_s6_i").value.toUpperCase() === "Q";
+            const s6_2 = document.getElementById("ans_s6_ii").value.toUpperCase() === "P";
+            const s6_3 = document.getElementById("ans_s6_iii").value.toUpperCase() === "R";
+            const s6_4 = document.getElementById("ans_s6_iv").value.toUpperCase() === "S";
+            paparkanSemakanDanPembetulan(6, { "s6_i": s6_1, "s6_ii": s6_2, "s6_iii": s6_3, "s6_iv": s6_4 }, (s6_1 && s6_2 && s6_3 && s6_4));
+
+            const s7_1 = ["/", "✓"].includes(document.getElementById("ans_s7_1").value);
+            const s7_2 = ["/", "✓"].includes(document.getElementById("ans_s7_2").value);
+            const s7_3 = document.getElementById("ans_s7_3").value.toUpperCase() === "X";
+            const s7_4 = ["/", "✓"].includes(document.getElementById("ans_s7_4").value);
+            paparkanSemakanDanPembetulan(7, { "s7_1": s7_1, "s7_2": s7_2, "s7_3": s7_3, "s7_4": s7_4 }, (s7_1 && s7_2 && s7_3 && s7_4));
+
+            const s8Score = (r.markahPerItem["s8"] || 0);
+            paparkanSemakanDanPembetulan(8, { "s8": s8Score >= 4 }, s8Score >= 4);
+
+            const s9_1 = document.getElementById("ans_s9_1").value.toUpperCase() === "Z";
+            const s9_2 = document.getElementById("ans_s9_2").value.toUpperCase() === "Y";
+            const s9_3 = document.getElementById("ans_s9_3").value.toUpperCase() === "W";
+            const s9_4 = document.getElementById("ans_s9_4").value.toUpperCase() === "X";
+            paparkanSemakanDanPembetulan(9, { "s9_1": s9_1, "s9_2": s9_2, "s9_3": s9_3, "s9_4": s9_4 }, (s9_1 && s9_2 && s9_3 && s9_4));
+
+            const s10_1 = document.getElementById("ans_s10_1").value.toUpperCase() === "X";
+            const s10_2 = ["/", "✓"].includes(document.getElementById("ans_s10_2").value);
+            const s10_3 = ["/", "✓"].includes(document.getElementById("ans_s10_3").value);
+            const s10_4 = ["/", "✓"].includes(document.getElementById("ans_s10_4").value);
+            paparkanSemakanDanPembetulan(10, { "s10_1": s10_1, "s10_2": s10_2, "s10_3": s10_3, "s10_4": s10_4 }, (s10_1 && s10_2 && s10_3 && s10_4));
+          }
+          st.innerHTML = '<i class="fa-solid fa-stamp text-emerald-600 mr-1"></i> Kertas Telah Ditanda';
+        } else {
+          document.getElementById("panelKeputusanMurid").classList.add("hidden");
+          st.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Sedia Menjawab';
+        }
+      } catch (err) {
+        st.innerHTML = '<i class="fa-solid fa-hard-drive mr-1"></i> Mod Setempat (Luar Talian)';
+      }
+    }
+
+    async function hantarSoalan(soalanNo) {
+      if (!currentUser) return;
+
+      const answerText = kumpulJawapanSoalan(soalanNo);
+      const btn = document.getElementById(`btn_soalan_${soalanNo}`);
+      const badge = document.getElementById(`badge_status_${soalanNo}`);
+      
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Menyimpan...';
+
+      const payload = {
+        action: "hantar_soalan",
+        soalanNo: soalanNo,
+        nama: currentUser.nama,
+        nokp: normalizeIc(currentUser.ic),
+        answers: { [`s${soalanNo}`]: answerText }
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        simpanAutoLocal();
+
+        badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Disimpan di Google Sheet';
+        badge.className = "text-xs text-emerald-700 font-bold";
+        btn.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> Berjaya!';
+        btn.className = "px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center";
+        
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Kemas Kini S${soalanNo}`;
+        }, 1500);
+
+      } catch (err) {
+        alert("Disimpan setempat di peranti (Sambungan awan tergendala).");
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
+    }
+
+    async function hantarPembetulan(soalanNo) {
+      if (!currentUser) return;
+      let textPembetulan = "";
+
+      if (soalanNo === 1) {
+        textPembetulan = [
+          document.getElementById("corr_s1_i").value.toUpperCase(),
+          document.getElementById("corr_s1_ii").value.toUpperCase(),
+          document.getElementById("corr_s1_iii").value.toUpperCase(),
+          document.getElementById("corr_s1_iv").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (soalanNo === 2) {
+        textPembetulan = `Pengaturcaraan:${document.getElementById("corr_s2_y").value.toUpperCase()}, PilihBahan:${document.getElementById("corr_s2_x").value.toUpperCase()}, BinaPasang:${document.getElementById("corr_s2_z").value.toUpperCase()} | (b) ${document.getElementById("corr_s2_b").value}`;
+      } else if (soalanNo === 3) {
+        textPembetulan = [
+          document.getElementById("corr_s3_1").value.toUpperCase(),
+          document.getElementById("corr_s3_2").value.toUpperCase(),
+          document.getElementById("corr_s3_3").value.toUpperCase(),
+          document.getElementById("corr_s3_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (soalanNo === 4) {
+        textPembetulan = [
+          document.getElementById("corr_s4_i").value.toUpperCase(),
+          document.getElementById("corr_s4_ii").value.toUpperCase(),
+          document.getElementById("corr_s4_iii").value.toUpperCase(),
+          document.getElementById("corr_s4_iv").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (soalanNo === 5) {
+        let arr = [];
+        if (document.getElementById("corr_chk_s5_1").checked) arr.push("Mengelakkan kerugian masa");
+        if (document.getElementById("corr_chk_s5_2").checked) arr.push("Menentukan aktiviti");
+        if (document.getElementById("corr_chk_s5_3").checked) arr.push("keutamaan");
+        if (document.getElementById("corr_chk_s5_4").checked) arr.push("tempoh masa");
+        if (document.getElementById("corr_chk_s5_5").checked) arr.push("sumber");
+        textPembetulan = arr.join(", ");
+      } else if (soalanNo === 6) {
+        textPembetulan = [
+          document.getElementById("corr_s6_i").value.toUpperCase(),
+          document.getElementById("corr_s6_ii").value.toUpperCase(),
+          document.getElementById("corr_s6_iii").value.toUpperCase(),
+          document.getElementById("corr_s6_iv").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (soalanNo === 7) {
+        textPembetulan = [
+          document.getElementById("corr_s7_1").value.toUpperCase(),
+          document.getElementById("corr_s7_2").value.toUpperCase(),
+          document.getElementById("corr_s7_3").value.toUpperCase(),
+          document.getElementById("corr_s7_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (soalanNo === 8) {
+        textPembetulan = document.getElementById("corr_s8").value;
+      } else if (soalanNo === 9) {
+        textPembetulan = [
+          document.getElementById("corr_s9_1").value.toUpperCase(),
+          document.getElementById("corr_s9_2").value.toUpperCase(),
+          document.getElementById("corr_s9_3").value.toUpperCase(),
+          document.getElementById("corr_s9_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      } else if (soalanNo === 10) {
+        textPembetulan = [
+          document.getElementById("corr_s10_1").value.toUpperCase(),
+          document.getElementById("corr_s10_2").value.toUpperCase(),
+          document.getElementById("corr_s10_3").value.toUpperCase(),
+          document.getElementById("corr_s10_4").value.toUpperCase()
+        ].filter(Boolean).join(" | ");
+      }
+
+      if (!textPembetulan.trim()) {
+        alert("Sila lengkapkan ruangan pembetulan terlebih dahulu.");
+        return;
+      }
+
+      const payload = {
+        action: "hantar_pembetulan",
+        soalanNo: soalanNo,
+        nama: currentUser.nama,
+        nokp: normalizeIc(currentUser.ic),
+        answers: { [`s${soalanNo}`]: `[PEMBETULAN]: ${textPembetulan}` }
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        alert(`Pembetulan Soalan ${soalanNo} telah berjaya direkodkan!`);
+      } catch (e) {
+        alert("Pembetulan disimpan di peranti setempat.");
+      }
+    }
+
+    async function submitSemuaJawapan() {
+      if (!confirm("Adakah anda pasti ingin menghantar kesemua soalan (S1 - S10) ke Google Sheet sekarang?")) return;
+
+      const allAnswers = {};
+      for (let sNo = 1; sNo <= 10; sNo++) {
+        allAnswers[`s${sNo}`] = kumpulJawapanSoalan(sNo);
+      }
+
+      const btn = document.getElementById("btnHantarSemua");
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menghantar Semua Jawapan...';
+
+      const payload = {
+        action: "hantar_jawapan",
+        nama: currentUser.nama,
+        nokp: normalizeIc(currentUser.ic),
+        answers: allAnswers
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        alert("Tahniah! Kesemua soalan S1 hingga S10 telah selamat dihantar ke Google Sheet.");
+        btn.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i> Semua Jawapan Selesai Dihantar';
+        btn.classList.replace("bg-emerald-600", "bg-slate-700");
+
+        for (let sNo = 1; sNo <= 10; sNo++) {
+          const badge = document.getElementById(`badge_status_${sNo}`);
+          if (badge) {
+            badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Selesai Dihantar';
+            badge.className = "text-xs text-emerald-700 font-bold";
+          }
+        }
+      } catch (e) {
+        alert("Ralat sambungan. Sila pastikan talian internet aktif.");
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> Hantar Semula';
+      }
+    }
+
+    // MOD GURU
+    async function tarikDariGoogleSheet(showAlert) {
+      const box = document.getElementById("statusSegerakBox");
+      const btn = document.getElementById("btnSegerak");
+      
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Menyegerak...';
+      }
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=get_submissions&_t=${Date.now()}`);
+        const data = await res.json();
+        
+        if (Array.isArray(data)) {
+          storedSubmissions = {};
+
+          data.forEach(row => {
+            let rowIc = "", rowName = "";
+
+            Object.keys(row).forEach(headerKey => {
+              const hk = headerKey.toLowerCase().replace(/[^a-z0-9]/g, "");
+              if (hk.includes("nama")) rowName = String(row[headerKey] || "");
+              else if (hk.includes("kp") || hk.includes("ic")) rowIc = String(row[headerKey] || "");
+            });
+
+            const normIc = normalizeIc(rowIc);
+            const normName = cleanName(rowName);
+
+            const matchedMurid = SENARAI_MURID.find(m => {
+              return (normIc && normalizeIc(m.ic) === normIc) || (normName && cleanName(m.nama) === normName);
+            });
+
+            if (matchedMurid) {
+              const targetIcKey = normalizeIc(matchedMurid.ic);
+              if (!storedSubmissions[targetIcKey]) storedSubmissions[targetIcKey] = {};
+
+              ALL_QUESTION_KEYS.forEach(qKey => {
+                const targetKeyClean = qKey.toLowerCase().replace(/[^a-z0-9]/g, "");
+                Object.keys(row).forEach(hKey => {
+                  if (hKey.toLowerCase().replace(/[^a-z0-9]/g, "") === targetKeyClean) {
+                    const ansVal = String(row[hKey] || "").trim();
+                    if (ansVal) storedSubmissions[targetIcKey][qKey] = ansVal;
+                  }
+                });
+              });
+            }
+          });
+
+          binaMatriksStatusAdmin();
+          muatJawapanMuridDipilih();
+
+          if (box) {
+            box.innerHTML = `<span class="text-emerald-700 font-bold"><i class="fa-solid fa-circle-check mr-1.5"></i> Segerak Berjaya: ${Object.keys(storedSubmissions).length} / ${SENARAI_MURID.length} murid dikesan mempunyai rekod.</span>`;
+          }
+          if (showAlert) alert("Penyegerakan Google Sheet berjaya!");
+        }
+      } catch (e) {
+        if (box) box.innerHTML = `<span class="text-rose-600 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Ralat: ${e.message}</span>`;
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-arrows-rotate mr-1.5"></i> Segerak Semula';
+        }
+      }
+    }
+
+    function binaMatriksStatusAdmin() {
+      const tbody = document.getElementById("tbodyMatriksCalon");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      let jumlahCalonJawabPerSoalan = Array(11).fill(0);
+
+      SENARAI_MURID.forEach((murid, idx) => {
+        const ic = normalizeIc(murid.ic);
+        let sub = storedSubmissions[ic] || {};
+
+        const local = localStorage.getItem(`jawapan_rbt2_${ic}`);
+        if (local) {
+          try {
+            const p = JSON.parse(local);
+            ALL_QUESTION_KEYS.forEach(qKey => {
+              if (!sub[qKey] && p[qKey]) sub[qKey] = p[qKey];
+            });
+          } catch(e){}
+        }
+
+        let soalanSelesaiCount = 0;
+        let cellsHtml = "";
+
+        for (let sNo = 1; sNo <= 10; sNo++) {
+          const key = `s${sNo}`;
+          const hasAnswer = sub[key] && String(sub[key]).trim() !== "";
+
+          if (hasAnswer) {
+            soalanSelesaiCount++;
+            jumlahCalonJawabPerSoalan[sNo]++;
+            cellsHtml += `
+              <td class="py-2.5 px-2 text-center">
+                <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 font-black text-xs">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+              </td>`;
+          } else {
+            cellsHtml += `<td class="py-2.5 px-2 text-center text-slate-300 font-bold">—</td>`;
+          }
+        }
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-mono font-bold text-slate-500">${idx + 1}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-800 flex flex-col">
+            <span>${murid.nama}</span>
+            <span class="text-[10px] text-slate-400 font-mono">${murid.ic}</span>
+          </td>
+          ${cellsHtml}
+          <td class="py-2.5 px-3 text-center">
+            <span class="px-2.5 py-1 rounded-full text-xs font-black ${soalanSelesaiCount === 10 ? 'bg-emerald-100 text-emerald-800' : (soalanSelesaiCount > 0 ? 'bg-teal-100 text-teal-800' : 'bg-slate-100 text-slate-500')}">
+              ${soalanSelesaiCount} / 10
+            </span>
+          </td>
+          <td class="py-2.5 px-3 text-center">
+            <button onclick="pilihCalonDanScroll('${murid.nama}')" class="px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center mx-auto">
+              <i class="fa-solid fa-pen-to-square mr-1"></i> Tanda
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const statContainer = document.getElementById("barStatistikSoalan");
+      if (statContainer) {
+        statContainer.innerHTML = "";
+        for (let sNo = 1; sNo <= 10; sNo++) {
+          const count = jumlahCalonJawabPerSoalan[sNo];
+          const div = document.createElement("div");
+          div.className = "bg-white p-2 rounded-lg border border-slate-200 shadow-2xs";
+          div.innerHTML = `
+            <span class="font-bold text-slate-600 block text-[10px]">S${sNo}</span>
+            <span class="text-xs font-black ${count > 0 ? 'text-teal-700' : 'text-slate-400'}">${count}/${SENARAI_MURID.length}</span>
+          `;
+          statContainer.appendChild(div);
+        }
+      }
+    }
+
+    function pilihCalonDanScroll(namaCalon) {
+      document.getElementById("selectMuridMenanda").value = namaCalon;
+      muatJawapanMuridDipilih();
+      document.getElementById("panelMenandaGuru").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function analisisJawapanAI(kunciSoalan, jawapanTeks) {
+      if (!jawapanTeks || !jawapanTeks.trim()) return { cadanganMarkah: 0, kataKunciDitemui: [] };
+
+      const itemSkema = SKEMA_DATA[kunciSoalan];
+      if (!itemSkema || !itemSkema.kriteria) return { cadanganMarkah: 0, kataKunciDitemui: [] };
+
+      const teks = jawapanTeks.toLowerCase();
+      let kiraanMarkah = 0;
+      let dikesan = [];
+
+      itemSkema.kriteria.forEach(krit => {
+        const padan = krit.words.some(w => teks.includes(w.toLowerCase()));
+        if (padan) {
+          kiraanMarkah += (krit.point || 1);
+          dikesan.push(krit.label);
+        }
+      });
+
+      if (kiraanMarkah > itemSkema.max) kiraanMarkah = itemSkema.max;
+
+      return { cadanganMarkah: kiraanMarkah, kataKunciDitemui: dikesan };
+    }
+
+    function binaBorangPenandaanGuru() {
+      const container = document.getElementById("containerPenandaan");
+      container.innerHTML = "";
+
+      ALL_QUESTION_KEYS.forEach(k => {
+        const itm = SKEMA_DATA[k];
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden";
+        card.innerHTML = `
+          <div class="bg-slate-50 px-5 py-3 border-b flex flex-wrap justify-between items-center gap-2">
+            <span class="font-bold text-slate-800 text-sm">${itm.tajuk}</span>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs text-slate-500 font-bold">Markah Penuh: ${itm.max}m</span>
+              <button type="button" onclick="ikutCadanganAI('${k}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-teal-950 rounded-lg text-xs font-bold transition flex items-center shadow-sm">
+                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Ikut AI
+              </button>
+              <input type="number" id="markah_${k}" min="0" max="${itm.max}" value="0" oninput="kiraMarkahKeseluruhan()"
+                class="w-16 px-2 py-1 text-center font-black text-teal-700 bg-white border border-teal-300 rounded-lg focus:ring-2 focus:ring-teal-500 text-sm" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 p-4 gap-4 text-xs">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-slate-600 flex items-center">
+                  <i class="fa-solid fa-user-pen text-teal-600 mr-1.5"></i> Jawapan Calon:
+                </span>
+                <span id="badgeAI_${k}" class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                  ⚡ Cadangan AI: 0/${itm.max}m
+                </span>
+              </div>
+              <div id="viewMurid_${k}" class="p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[85px] whitespace-pre-wrap leading-relaxed italic">
+                (Calon belum dipilih)
+              </div>
+              <div class="mt-2" id="kotakKeywords_${k}">
+                <span class="text-[10px] text-slate-400 font-bold block mb-1">Kata Kunci Dikesan oleh AI:</span>
+                <div id="listKeywords_${k}" class="flex flex-wrap gap-1">
+                  <span class="text-[10px] text-slate-400 italic">Tiada kata kunci dikesan.</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <span class="font-bold text-amber-700 mb-1 flex items-center">
+                <i class="fa-solid fa-book-bookmark text-amber-600 mr-1.5"></i> Skema Jawapan Rasmi:
+              </span>
+              <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-200 text-slate-700 min-h-[85px] whitespace-pre-wrap leading-relaxed font-mono text-[11px]">
+${itm.skema}
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function ikutCadanganAI(kunci) {
+      const elAI = document.getElementById(`badgeAI_${kunci}`);
+      if (elAI && elAI.dataset.score !== undefined) {
+        document.getElementById(`markah_${kunci}`).value = elAI.dataset.score;
+        kiraMarkahKeseluruhan();
+      }
+    }
+
+    function terapkanSemuaCadanganAI() {
+      const nama = document.getElementById("selectMuridMenanda").value;
+      if (!nama) { alert("Sila pilih calon terlebih dahulu."); return; }
+      ALL_QUESTION_KEYS.forEach(k => ikutCadanganAI(k));
+      kiraMarkahKeseluruhan();
+      alert("Semua cadangan markah AI telah diterapkan!");
+    }
+
+    function muatJawapanMuridDipilih() {
+      const nama = document.getElementById("selectMuridMenanda").value;
+      if (!nama) return;
+      const m = SENARAI_MURID.find(x => x.nama === nama);
+      if (!m) return;
+
+      const normIc = normalizeIc(m.ic);
+      let j = storedSubmissions[normIc] || {};
+
+      if (Object.keys(j).length === 0) {
+        const local = localStorage.getItem(`jawapan_rbt2_${normIc}`);
+        if (local) {
+          try { j = JSON.parse(local); } catch(e){}
+        }
+      }
+
+      ALL_QUESTION_KEYS.forEach(k => {
+        const el = document.getElementById(`viewMurid_${k}`);
+        const textAnswer = (j && j[k]) ? j[k] : "";
+        
+        if (el) {
+          el.textContent = textAnswer ? textAnswer : "(Calon tidak menjawab)";
+          el.className = textAnswer
+            ? "p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[85px] whitespace-pre-wrap leading-relaxed"
+            : "p-3 bg-slate-50 rounded-xl border text-slate-400 min-h-[85px] whitespace-pre-wrap leading-relaxed italic";
+        }
+
+        const aiResult = analisisJawapanAI(k, textAnswer);
+        const bAI = document.getElementById(`badgeAI_${k}`);
+        const lKey = document.getElementById(`listKeywords_${k}`);
+        
+        if (bAI) {
+          bAI.textContent = `⚡ Cadangan AI: ${aiResult.cadanganMarkah} / ${SKEMA_DATA[k].max}m`;
+          bAI.dataset.score = aiResult.cadanganMarkah;
+        }
+
+        if (lKey) {
+          lKey.innerHTML = "";
+          if (aiResult.kataKunciDitemui.length > 0) {
+            aiResult.kataKunciDitemui.forEach(kw => {
+              const span = document.createElement("span");
+              span.className = "px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]";
+              span.textContent = `✓ ${kw}`;
+              lKey.appendChild(span);
+            });
+          } else {
+            lKey.innerHTML = '<span class="text-[10px] text-slate-400 italic">Tiada kata kunci dikesan.</span>';
+          }
+        }
+      });
+
+      const savedScore = localStorage.getItem(`markah_rbt2_${normIc}`);
+      if (savedScore) {
+        try {
+          const obj = JSON.parse(savedScore);
+          if (obj.scores) {
+            Object.keys(obj.scores).forEach(key => {
+              const inp = document.getElementById(`markah_${key}`);
+              if (inp) inp.value = obj.scores[key];
+            });
+          }
+          if (obj.ulasan) document.getElementById("ulasanGuru").value = obj.ulasan;
+        } catch(e){}
+      } else {
+        ALL_QUESTION_KEYS.forEach(key => {
+          const inp = document.getElementById(`markah_${key}`);
+          if (inp) inp.value = 0;
+        });
+        document.getElementById("ulasanGuru").value = "";
+      }
+
+      kiraMarkahKeseluruhan();
+    }
+
+    function kiraMarkahKeseluruhan() {
+      let total = 0;
+      ALL_QUESTION_KEYS.forEach(k => {
+        const itm = SKEMA_DATA[k];
+        const inp = document.getElementById(`markah_${k}`);
+        let v = parseFloat(inp ? inp.value : 0) || 0;
+        if (v > itm.max) { v = itm.max; inp.value = v; }
+        if (v < 0) { v = 0; inp.value = 0; }
+        total += v;
+      });
+
+      const peratus = ((total / 40) * 100).toFixed(1);
+      document.getElementById("liveJumlahMarkah").textContent = `${total} / 40`;
+      document.getElementById("livePeratusan").textContent = `${peratus}%`;
+
+      let g = "F";
+      if (peratus >= 85) g = "A";
+      else if (peratus >= 70) g = "B";
+      else if (peratus >= 60) g = "C";
+      else if (peratus >= 50) g = "D";
+      else if (peratus >= 40) g = "E";
+      else g = "F";
+
+      document.getElementById("liveGred").textContent = g;
+    }
+
+    async function simpanPemarkahanGuru() {
+      const nama = document.getElementById("selectMuridMenanda").value;
+      if (!nama) { alert("Sila pilih calon terlebih dahulu."); return; }
+      const m = SENARAI_MURID.find(x => x.nama === nama);
+
+      const scores = {};
+      let total = 0;
+      ALL_QUESTION_KEYS.forEach(k => {
+        const val = parseFloat(document.getElementById(`markah_${k}`).value) || 0;
+        scores[k] = val;
+        total += val;
+      });
+
+      const normIc = normalizeIc(m.ic);
+      const payload = {
+        action: "simpan_markah",
+        nama: m.nama,
+        nokp: normIc,
+        jumlahMarkah: total,
+        gred: document.getElementById("liveGred").textContent,
+        ulasan: document.getElementById("ulasanGuru").value,
+        markahPerItem: scores
+      };
+
+      localStorage.setItem(`markah_rbt2_${normIc}`, JSON.stringify({ scores, ulasan: payload.ulasan }));
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        alert(`Markah & ulasan bagi calon ${m.nama} telah berjaya direkodkan!`);
+      } catch (e) {
+        alert("Markah disimpan secara setempat di peranti guru.");
+      }
+    }
+  </script>
+</body>
+</html>
